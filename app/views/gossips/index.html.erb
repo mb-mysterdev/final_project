@@ -1,0 +1,73 @@
+<h1>Bienvenue <%= session[:first_name] %> </h1>
+<div id="conteneur_btn">
+<p>Gossips List :</p>
+<% if User.find_by(id: session[:user_id]) %>
+  <%=  link_to "Créer un gossip ", new_gossip_path, class: "btng "%>
+<% end %>
+</div>
+
+<div id="conteneur_card">
+  <% Gossip.all.each.with_index do |gossip, index| %>
+  <div class="card" id="cc"style="width: 20rem;">
+    <div class="card-body">
+      <h5 class="card-title"> <%= gossip.title %></h5>
+      <p class="card-text">Auteur: <%= gossip.user.first_name %></p>
+      <p class="card-text">Commentaires: <%= Comment.where(gossip_id: gossip.id).count %></p>
+            <img src="https://png.pngtree.com/svg/20170829/anonymous_689758.png" style="width: 80px;">
+
+      <div id="conteneur_link">
+        <%= link_to "Voir le détail", gossip_path(gossip.id), id: "ld", class: "card-link" %>
+        <%= link_to "Voir l'auteur", user_path(gossip.user_id),id: "ld", class: "card-link" %>
+        <% if User.find_by(id: session[:user_id]) && gossip.user_id == User.find_by(id: session[:user_id]).id %>
+          <%= link_to "Modifier", edit_gossip_path(gossip.id), id: "ld",class: "card-link" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %> 
+</div>
+
+
+<style>
+h1 {
+  color : white;
+}
+.btng:hover {
+  text-decoration : none;
+}
+.btng {
+  color : #d8d1d1;
+  display : grid ;
+  justify-content : center;
+  background : #1870ce4f;
+  width : 130px;
+  height : 30px;
+  
+}
+#ld {
+  color : #5f1b8a;
+}
+#cc {
+  background : #0cbcff00;
+  color : white;
+  box-shadow : 0px 0px 9px 0px;
+}
+#cc:hover {
+    box-shadow : 0px 0px 20px 0px;
+
+}
+p {
+  color : white;
+}
+#conteneur_card {
+
+  color : white;
+}
+body {
+  background-image : linear-gradient(#FC5C7D,#6A82FB);
+  background-size : cover;
+  background-repeat : no-repeat;
+  background-attachment : fixed;
+  color: white;
+  font-family: sans-serif;
+</style>
